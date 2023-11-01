@@ -1,0 +1,9 @@
+{
+  "name": "@double-spent/sbtc-jest",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "ts-jest": "^29.1.1"
+  }
+}
