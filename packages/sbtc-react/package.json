@@ -1,0 +1,43 @@
+{
+  "name": "@double-spent/sbtc-react",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "eslint \"src/**/*.ts*\" --fix",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@double-spent/sbtc-core": "*"
+  },
+  "devDependencies": {
+    "@double-spent/sbtc-jest": "*",
+    "@double-spent/sbtc-tsconfig": "*",
+    "@stacks/transactions": "^6.9.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-sbtc": "*",
+    "jest-environment-jsdom": "^29.7.0",
+    "react": "^18.2.0",
+    "tsup": "^5.10.1",
+    "typescript": "^4.5.3"
+  },
+  "peerDependencies": {
+    "@stacks/transactions": "^6.9.0"
+  }
+}
