@@ -1,11 +1,11 @@
 {
   "name": "@double-spent/sbtc-core",
   "version": "0.0.0",
+  "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "license": "MIT",
   "files": [
     "dist/**"
   ],

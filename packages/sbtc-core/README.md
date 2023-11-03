@@ -13,9 +13,9 @@ devnet local contracts.
 
 ### Deposit sBTC
 
-Depositing sBTC is done via the `depositSbtc` function. Set up the sender addresses, network, and the callback to sign
-the deposit [PSBT](https://river.com/learn/what-are-partially-signed-bitcoin-transactions-psbts/) before broadcasting to
-the network.
+Depositing sBTC is done via the `submitSbtcDeposit` function. Set up the sender addresses, network, and the callback to
+sign the deposit [PSBT](https://river.com/learn/what-are-partially-signed-bitcoin-transactions-psbts/) before
+broadcasting to the network.
 
 ```ts
 import { depositSbtc, SbtcNetwork } from '@double-spent/sbtc-core';
@@ -38,7 +38,7 @@ const network = SbtcNetwork.TESTNET;
 
 // Send the deposit
 
-const btcTransactionHash = await depositSbtc({
+const btcTransactionHash = await submitSbtcDeposit({
   network,
   stacksAddress,
   bitcoinAddress,
@@ -50,7 +50,7 @@ const btcTransactionHash = await depositSbtc({
 console.log({ btcTransactionHash });
 ```
 
-The `depositSbtc` function takes the following arguments:
+The `submitSbtcDeposit` function takes the following arguments:
 
 | Argument           | Type                                             | Description                                                      |
 | ------------------ | ------------------------------------------------ | ---------------------------------------------------------------- |
@@ -65,7 +65,7 @@ The `depositSbtc` function takes the following arguments:
 
 | Feature       | Mode        | Status       |
 | ------------- | ----------- | ------------ |
-| sBTC Devnet   |             | 🟡 Pending   |
+| sBTC Devnet   |             | ✅ Supported |
 | sBTC Testnet  |             | ✅ Supported |
 | sBTC Mainnet  |             | 🟡 Pending   |
 | Deposit sBTC  | `OP_RETURN` | ✅ Supported |

@@ -1,10 +1,25 @@
-import { TESTNET, TestnetHelper } from 'sbtc';
+import { DevEnvHelper, REGTEST, TESTNET, TestnetHelper } from 'sbtc';
 
 import { SbtcUnsupportedNetworkError } from './errors';
 
 export enum SbtcNetwork {
+  DEVNET,
   TESTNET,
+  MAINNET,
 }
+
+type GetSbtcApiArgs =
+  | {
+      network: SbtcNetwork.DEVNET;
+      config?: ConstructorParameters<typeof DevEnvHelper>[0];
+    }
+  | {
+      network: SbtcNetwork.TESTNET;
+      config?: ConstructorParameters<typeof TestnetHelper>[0];
+    }
+  | {
+      network: SbtcNetwork.MAINNET;
+    };
 
 /**
  * Gets the sBTC remote API for the specified network.
@@ -13,13 +28,16 @@ export enum SbtcNetwork {
  *
  * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
  */
-export function getSbtcApi(network: SbtcNetwork) {
-  switch (network) {
+export function getSbtcApi(args: GetSbtcApiArgs) {
+  switch (args.network) {
     case SbtcNetwork.TESTNET:
-      return new TestnetHelper();
+      return new TestnetHelper(args.config);
+
+    case SbtcNetwork.DEVNET:
+      return new DevEnvHelper(args.config);
 
     default:
-      throw new SbtcUnsupportedNetworkError(network);
+      throw new SbtcUnsupportedNetworkError(args.network);
   }
 }
 
@@ -34,6 +52,9 @@ export function getBtcNetwork(network: SbtcNetwork) {
   switch (network) {
     case SbtcNetwork.TESTNET:
       return TESTNET;
+
+    case SbtcNetwork.DEVNET:
+      return REGTEST;
 
     default:
       throw new SbtcUnsupportedNetworkError(network);

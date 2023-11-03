@@ -1,4 +1,4 @@
-import type { UtxoWithTx } from 'sbtc';
+import type { SbtcApiHelper, UtxoWithTx } from 'sbtc';
 import { sbtcDepositHelper } from 'sbtc';
 
 import * as btc from '@scure/btc-signer';
@@ -8,6 +8,8 @@ import { SbtcApiError } from './errors';
 import type { SbtcSignPsbtCallback } from './interfaces';
 import type { SbtcNetwork } from './network';
 import { getBtcNetwork, getSbtcApi } from './network';
+
+type SbtcDepositFeeRate = Parameters<SbtcApiHelper['estimateFeeRate']>[0];
 
 /**
  * Arguments for an sBTC deposit.
@@ -19,6 +21,7 @@ export type DepositSbtcArgs = {
   bitcoinPublicKey: string;
   network: SbtcNetwork;
   signPsbt: SbtcSignPsbtCallback;
+  feeRate?: SbtcDepositFeeRate;
 };
 
 /**
@@ -42,15 +45,16 @@ export type DepositSbtcResult = {
  *
  * @throws {SbtcApiError} Failed to fetch from the sBTC API.
  */
-export async function depositSbtc({
+export async function submitSbtcDeposit({
+  network,
   satsAmount,
   stacksAddress,
   bitcoinAddress,
   bitcoinPublicKey,
-  network,
+  feeRate: feeRateTarget = 'low',
   signPsbt,
 }: DepositSbtcArgs): Promise<DepositSbtcResult> {
-  const api = getSbtcApi(network);
+  const api = getSbtcApi({ network });
 
   let utxos: UtxoWithTx[];
   let pegAddress: string;
@@ -60,7 +64,7 @@ export async function depositSbtc({
     [utxos, pegAddress, feeRate] = await Promise.all([
       api.fetchUtxos(bitcoinAddress),
       api.getSbtcPegAddress(),
-      api.estimateFeeRate('low'),
+      api.estimateFeeRate(feeRateTarget),
     ]);
   } catch (error) {
     throw new SbtcApiError(api, error as Error);
