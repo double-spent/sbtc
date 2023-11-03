@@ -6,6 +6,13 @@ export enum SbtcNetwork {
   TESTNET,
 }
 
+/**
+ * Gets the sBTC remote API for the specified network.
+ *
+ * @param network The network to use.
+ *
+ * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ */
 export function getSbtcApi(network: SbtcNetwork) {
   switch (network) {
     case SbtcNetwork.TESTNET:
@@ -16,7 +23,14 @@ export function getSbtcApi(network: SbtcNetwork) {
   }
 }
 
-export function getSbtcNetwork(network: SbtcNetwork) {
+/**
+ * Gets the BTC network for the specified sBTC network.
+ *
+ * @param network The network to use.
+ *
+ * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ */
+export function getBtcNetwork(network: SbtcNetwork) {
   switch (network) {
     case SbtcNetwork.TESTNET:
       return TESTNET;

@@ -7,8 +7,11 @@ import { bytesToHex, hexToBytes } from '@stacks/common';
 import { SbtcApiError } from './errors';
 import type { SbtcSignPsbtCallback } from './interfaces';
 import type { SbtcNetwork } from './network';
-import { getSbtcApi, getSbtcNetwork } from './network';
+import { getBtcNetwork, getSbtcApi } from './network';
 
+/**
+ * Arguments for an sBTC deposit.
+ */
 export type DepositSbtcArgs = {
   satsAmount: number;
   stacksAddress: string;
@@ -18,10 +21,27 @@ export type DepositSbtcArgs = {
   signPsbt: SbtcSignPsbtCallback;
 };
 
+/**
+ * The result of an sBTC deposit.
+ */
 export type DepositSbtcResult = {
   btcTransactionHash: string;
 };
 
+/**
+ * Initiates and broadcasts an sBTC deposit to the network.
+ *
+ * @param args.satsAmount       The amount in satoshis to deposit.
+ * @param args.stacksAddress    The sender's Stacks address where the sBTC will be sent.
+ * @param args.bitcoinAddress   The sender's Bitcoin address where the BTC is deposited from.
+ * @param args.bitcoinPublicKey The sender's Bitcoin public key used to sign the deposit PSBT.
+ * @param args.signPsbt         The callback used to sign PSBTs before broadcasting the deposit.
+ * @param args.network          The network to use.
+ *
+ * @returns The Bitcoin transaction hash.
+ *
+ * @throws {SbtcApiError} Failed to fetch from the sBTC API.
+ */
 export async function depositSbtc({
   satsAmount,
   stacksAddress,
@@ -47,7 +67,7 @@ export async function depositSbtc({
   }
 
   const transaction = await sbtcDepositHelper({
-    network: getSbtcNetwork(network),
+    network: getBtcNetwork(network),
     bitcoinChangeAddress: bitcoinAddress,
     amountSats: satsAmount,
     stacksAddress,

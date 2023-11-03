@@ -10,6 +10,6 @@ export class SbtcUnsupportedNetworkError extends Error {
 
 export class SbtcApiError extends Error {
   constructor(public readonly api: SbtcApiHelper, public readonly innerError: Error) {
-    super(`Failed to call ${api.config.bitcoinElectrsApiUrl} with error: ${innerError.message}`);
+    super(`Failed to fetch from ${api.config.bitcoinElectrsApiUrl} with error: ${innerError.message}`);
   }
 }
