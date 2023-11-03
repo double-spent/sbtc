@@ -1,5 +1,6 @@
 {
   "name": "@double-spent/sbtc",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "turbo build",
