@@ -21,7 +21,6 @@
     "@double-spent/sbtc-jest": "*",
     "@double-spent/sbtc-tsconfig": "*",
     "@stacks/common": "^6.8.1",
-    "@stacks/connect": "^7.4.0",
     "@stacks/network": "^6.8.1",
     "@stacks/transactions": "^6.9.0",
     "eslint": "^7.32.0",
@@ -32,7 +31,6 @@
   },
   "peerDependencies": {
     "@stacks/common": "^6.8.1",
-    "@stacks/connect": "^7.4.0",
     "@stacks/network": "^6.8.1",
     "@stacks/transactions": "^6.9.0",
     "sbtc": "^0.1.8"

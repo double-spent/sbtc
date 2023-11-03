@@ -25,13 +25,3 @@ export function getSbtcNetwork(network: SbtcNetwork) {
       throw new SbtcUnsupportedNetworkError(network);
   }
 }
-
-export function getSbtcUserDataNetwork(network: SbtcNetwork) {
-  switch (network) {
-    case SbtcNetwork.TESTNET:
-      return 'testnet';
-
-    default:
-      throw new SbtcUnsupportedNetworkError(network);
-  }
-}

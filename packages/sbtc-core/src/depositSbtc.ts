@@ -4,32 +4,33 @@ import { sbtcDepositHelper } from 'sbtc';
 import * as btc from '@scure/btc-signer';
 import { bytesToHex, hexToBytes } from '@stacks/common';
 
-import type { SbtcContext } from './config';
-import { SbtcApiError, SbtcInvalidUserError } from './errors';
-import { getSbtcApi, getSbtcNetwork, getSbtcUserDataNetwork } from './network';
+import { SbtcApiError } from './errors';
+import type { SbtcSignPsbtCallback } from './interfaces';
+import type { SbtcNetwork } from './network';
+import { getSbtcApi, getSbtcNetwork } from './network';
 
 export type DepositSbtcArgs = {
   satsAmount: number;
-  context: SbtcContext;
+  stacksAddress: string;
+  bitcoinAddress: string;
+  bitcoinPublicKey: string;
+  network: SbtcNetwork;
+  signPsbt: SbtcSignPsbtCallback;
 };
 
 export type DepositSbtcResult = {
   btcTransactionHash: string;
 };
 
-export async function depositSbtc({ satsAmount, context }: DepositSbtcArgs): Promise<DepositSbtcResult> {
-  const { user, network, signPsbt } = context;
-
-  if (!user) {
-    throw new SbtcInvalidUserError();
-  }
-
+export async function depositSbtc({
+  satsAmount,
+  stacksAddress,
+  bitcoinAddress,
+  bitcoinPublicKey,
+  network,
+  signPsbt,
+}: DepositSbtcArgs): Promise<DepositSbtcResult> {
   const api = getSbtcApi(network);
-  const userDataNetwork = getSbtcUserDataNetwork(network);
-
-  const stxAddress = user.profile.stxAddress[userDataNetwork];
-  const btcAddress = user.profile.btcAddress.p2wpkh[userDataNetwork];
-  const btcPublicKey = user.profile.btcPublicKey.p2wpkh;
 
   let utxos: UtxoWithTx[];
   let pegAddress: string;
@@ -37,7 +38,7 @@ export async function depositSbtc({ satsAmount, context }: DepositSbtcArgs): Pro
 
   try {
     [utxos, pegAddress, feeRate] = await Promise.all([
-      api.fetchUtxos(btcAddress),
+      api.fetchUtxos(bitcoinAddress),
       api.getSbtcPegAddress(),
       api.estimateFeeRate('low'),
     ]);
@@ -47,9 +48,9 @@ export async function depositSbtc({ satsAmount, context }: DepositSbtcArgs): Pro
 
   const transaction = await sbtcDepositHelper({
     network: getSbtcNetwork(network),
-    bitcoinChangeAddress: btcAddress,
-    stacksAddress: stxAddress,
+    bitcoinChangeAddress: bitcoinAddress,
     amountSats: satsAmount,
+    stacksAddress,
     pegAddress,
     feeRate,
     utxos,
@@ -58,7 +59,7 @@ export async function depositSbtc({ satsAmount, context }: DepositSbtcArgs): Pro
   const psbt = transaction.toPSBT();
 
   const signedPsbt = await signPsbt({
-    publicKey: btcPublicKey,
+    publicKey: bitcoinPublicKey,
     hex: bytesToHex(psbt),
   });
 
