@@ -8,3 +8,9 @@ export class SbtcContextMissingError extends Error {
     );
   }
 }
+
+export class SbtcUserNotFoundError extends Error {
+  constructor() {
+    super(`No use data was provided. No wallet has been connected or the current user is invalid.`);
+  }
+}

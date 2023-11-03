@@ -26,6 +26,7 @@
   "devDependencies": {
     "@double-spent/sbtc-jest": "*",
     "@double-spent/sbtc-tsconfig": "*",
+    "@stacks/connect": "^7.4.0",
     "@stacks/transactions": "^6.9.0",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.0",
@@ -38,6 +39,7 @@
     "typescript": "^4.5.3"
   },
   "peerDependencies": {
-    "@stacks/transactions": "^6.9.0"
+    "@stacks/transactions": "^6.9.0",
+    "@stacks/connect": "^7.4.0"
   }
 }

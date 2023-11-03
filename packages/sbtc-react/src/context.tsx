@@ -1,13 +1,20 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
-import type { SbtcContext as CoreSbtcContext } from '@double-spent/sbtc-core';
+import type { SbtcNetwork, SbtcSignPsbtCallback } from '@double-spent/sbtc-core';
+import type { UserData } from '@stacks/connect';
 
 import { SbtcContextMissingError } from './errors';
 
-export const SbtcContext = createContext<CoreSbtcContext | undefined>(undefined);
+export type SbtcContext = {
+  user?: UserData;
+  network: SbtcNetwork;
+  signPsbt: SbtcSignPsbtCallback;
+};
 
-export function SBtcProvider({ children, ...context }: CoreSbtcContext & { children: ReactNode }) {
+export const SbtcContext = createContext<SbtcContext | undefined>(undefined);
+
+export function SBtcProvider({ children, ...context }: SbtcContext & { children: ReactNode }) {
   return <SbtcContext.Provider value={context}>{children}</SbtcContext.Provider>;
 }
 
