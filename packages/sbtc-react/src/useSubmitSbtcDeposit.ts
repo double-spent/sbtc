@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 
-import { depositSbtc as coreDepositSbtc } from '@double-spent/sbtc-core';
+import { submitSbtcDeposit as coreSubmitSbtcDeposit } from '@double-spent/sbtc-core';
 
 import { useSbtc } from './context';
 import { SbtcUserNotFoundError } from './errors';
 import { getSbtcUserDataNetwork } from './network';
 
-export function useDepositSbtc() {
+export function useSubmitSbtcDeposit() {
   const { network, user, signPsbt } = useSbtc();
 
-  const depositSbtc = useCallback(
+  const submitSbtcDeposit = useCallback(
     (satsAmount: number) => {
       if (!user) {
         throw new SbtcUserNotFoundError();
@@ -21,7 +21,7 @@ export function useDepositSbtc() {
       const bitcoinAddress = user.profile.btcAddress.p2wpkh[userDataNetwork];
       const bitcoinPublicKey = user.profile.btcPublicKey.p2wpkh;
 
-      return coreDepositSbtc({
+      return coreSubmitSbtcDeposit({
         network,
         stacksAddress,
         bitcoinAddress,
@@ -35,6 +35,6 @@ export function useDepositSbtc() {
 
   return {
     network,
-    depositSbtc,
+    submitSbtcDeposit,
   };
 }

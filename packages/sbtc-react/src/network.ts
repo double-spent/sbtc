@@ -2,6 +2,7 @@ import { SbtcNetwork, SbtcUnsupportedNetworkError } from '@double-spent/sbtc-cor
 
 export function getSbtcUserDataNetwork(network: SbtcNetwork) {
   switch (network) {
+    case SbtcNetwork.DEVNET:
     case SbtcNetwork.TESTNET:
       return 'testnet';
 

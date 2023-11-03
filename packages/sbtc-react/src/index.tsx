@@ -1,3 +1,3 @@
-export * from './errors';
+export * from './useSubmitSbtcDeposit';
 export * from './context';
-export * from './useDepositSbtc';
+export * from './errors';
