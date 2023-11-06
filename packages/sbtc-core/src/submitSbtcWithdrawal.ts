@@ -1,21 +1,20 @@
 import type { UtxoWithTx } from 'sbtc';
-import { sbtcDepositHelper } from 'sbtc';
+import { sbtcWithdrawHelper } from 'sbtc';
 
 import * as btc from '@scure/btc-signer';
 import { bytesToHex, hexToBytes } from '@stacks/common';
 
 import { SbtcApiError } from './errors';
 import type { SbtcDepositFeeRate, SbtcSignPsbtCallback } from './interfaces';
-import type { SbtcNetwork } from './network';
-import { getBtcNetwork, getSbtcApi } from './network';
+import { getBtcNetwork, getSbtcApi, type SbtcNetwork } from './network';
 
 /**
- * Arguments for an sBTC deposit.
+ * Arguments for an sBTC withdrawal.
  */
-export type SubmitSbtcDepositArgs = {
+export type SubmitSbtcWithdrawalArgs = {
+  signature: string;
   satsAmount: number;
   network: SbtcNetwork;
-  stacksAddress: string;
   bitcoinAddress: string;
   bitcoinPublicKey: string;
   feeRate?: SbtcDepositFeeRate;
@@ -23,35 +22,36 @@ export type SubmitSbtcDepositArgs = {
 };
 
 /**
- * The result of an sBTC deposit.
+ * The result of an sBTC withdrawal.
  */
-export type SubmitSbtcDepositResult = {
+export type SubmitSbtcWithdrawalResult = {
   btcTransactionHash: string;
 };
 
 /**
- * Initiates and broadcasts an sBTC deposit to the network.
+ * Initiates and broadcasts an sBTC withdrawal to the network. To submit a withdrawal, it has to
+ * be authorized by signing a message. Use `signSbtcWithdrawal` to create the signature.
  *
- * @param args.satsAmount       The amount in satoshis to deposit.
- * @param args.stacksAddress    The sender's Stacks address where the sBTC will be sent.
- * @param args.bitcoinAddress   The sender's Bitcoin address where the BTC is deposited from.
- * @param args.bitcoinPublicKey The sender's Bitcoin public key used to sign the deposit PSBT.
- * @param args.signPsbt         The callback used to sign PSBTs before broadcasting the deposit.
+ * @param args.signature        The signature authorizing the withdrawal.
+ * @param args.satsAmount       The amount in satoshis to withdraw.
+ * @param args.bitcoinAddress   The sender's Bitcoin address to send the withdrawn BTC.
+ * @param args.bitcoinPublicKey The sender's Bitcoin public key used to sign the withdraw PSBT.
+ * @param args.signPsbt         The callback used to sign PSBTs before broadcasting the withdrawal.
  * @param args.network          The network to use.
  *
  * @returns The Bitcoin transaction hash.
  *
  * @throws {SbtcApiError} Failed to fetch from the sBTC API.
  */
-export async function submitSbtcDeposit({
+export async function submitSbtcWithdrawal({
   network,
+  signature,
   satsAmount,
-  stacksAddress,
   bitcoinAddress,
   bitcoinPublicKey,
   feeRate: feeRateTarget = 'low',
   signPsbt,
-}: SubmitSbtcDepositArgs): Promise<SubmitSbtcDepositResult> {
+}: SubmitSbtcWithdrawalArgs): Promise<SubmitSbtcWithdrawalResult> {
   const api = getSbtcApi({ network });
 
   let utxos: UtxoWithTx[];
@@ -68,12 +68,14 @@ export async function submitSbtcDeposit({
     throw new SbtcApiError(api, error as Error);
   }
 
-  const transaction = await sbtcDepositHelper({
-    network: getBtcNetwork(network),
+  const transaction = await sbtcWithdrawHelper({
     bitcoinChangeAddress: bitcoinAddress,
+    network: getBtcNetwork(network),
+    fulfillmentFeeSats: 2000,
     amountSats: satsAmount,
-    stacksAddress,
+    bitcoinAddress,
     pegAddress,
+    signature,
     feeRate,
     utxos,
   });
