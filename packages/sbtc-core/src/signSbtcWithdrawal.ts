@@ -1,7 +1,8 @@
 import { sbtcWithdrawMessage } from 'sbtc';
 
+import type { SbtcSignMessageCallback } from './interfaces';
 import type { SbtcNetwork } from './network';
-import { getBtcNetwork } from './network';
+import { getBtcNetwork, getStacksNetwork } from './network';
 
 /**
  * Arguments for signing an sBTC withdrawal.
@@ -10,7 +11,7 @@ export type SignSbtcWithdrawalArgs = {
   satsAmount: number;
   bitcoinAddress: string;
   network: SbtcNetwork;
-  signMessage: (message: string) => Promise<string>;
+  signMessage: SbtcSignMessageCallback;
 };
 
 /**
@@ -31,13 +32,15 @@ export type SignSbtcWithdrawalResult = {
  * @returns The signature.
  */
 export async function signSbtcWithdrawal({ satsAmount, bitcoinAddress, network, signMessage }: SignSbtcWithdrawalArgs) {
+  const stacksNetwork = getStacksNetwork(network);
+
   const message = sbtcWithdrawMessage({
     network: getBtcNetwork(network),
     amountSats: satsAmount,
     bitcoinAddress,
   });
 
-  const signature = await signMessage(message);
+  const signature = await signMessage({ message, stacksNetwork });
 
   return {
     signature,

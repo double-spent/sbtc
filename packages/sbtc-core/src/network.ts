@@ -1,5 +1,7 @@
 import { DevEnvHelper, REGTEST, TESTNET, TestnetHelper } from 'sbtc';
 
+import { StacksDevnet, StacksTestnet } from '@stacks/network';
+
 import { SbtcUnsupportedNetworkError } from './errors';
 
 export enum SbtcNetwork {
@@ -55,6 +57,26 @@ export function getBtcNetwork(network: SbtcNetwork) {
 
     case SbtcNetwork.DEVNET:
       return REGTEST;
+
+    default:
+      throw new SbtcUnsupportedNetworkError(network);
+  }
+}
+
+/**
+ * Gets the Stacks network for the specified sBTC network.
+ *
+ * @param network The network to use.
+ *
+ * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ */
+export function getStacksNetwork(network: SbtcNetwork) {
+  switch (network) {
+    case SbtcNetwork.TESTNET:
+      return new StacksTestnet();
+
+    case SbtcNetwork.DEVNET:
+      return new StacksDevnet();
 
     default:
       throw new SbtcUnsupportedNetworkError(network);
