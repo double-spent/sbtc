@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
-import type { SbtcNetwork, SbtcSignPsbtCallback } from '@double-spent/sbtc-core';
-import type { UserData } from '@stacks/connect';
+import type { SbtcNetwork, SbtcSignMessageCallback, SbtcSignPsbtCallback } from '@double-spent/sbtc-core';
+import { type UserData } from '@stacks/connect';
 
 import { SbtcContextMissingError } from './errors';
 
@@ -10,6 +10,7 @@ export type SbtcContext = {
   user?: UserData;
   network: SbtcNetwork;
   signPsbt: SbtcSignPsbtCallback;
+  signMessage: SbtcSignMessageCallback;
 };
 
 export const SbtcContext = createContext<SbtcContext | undefined>(undefined);
