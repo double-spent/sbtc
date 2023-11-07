@@ -179,3 +179,8 @@ The `signSbtcWithdrawal` function takes the following arguments:
 | Withdraw sBTC | `OP_RETURN` | ✅ Pending   |
 | Deposit sBTC  | `OP_DROP`   | 🟡 Pending   |
 | Withdraw sBTC | `OP_DROP`   | 🟡 Pending   |
+
+## References
+
+- [sBTC official documentation](https://stacks-network.github.io/sbtc-docs/) by Stacks
+- [sbtc NPM package](https://www.npmjs.com/package/sbtc) by Stacks
