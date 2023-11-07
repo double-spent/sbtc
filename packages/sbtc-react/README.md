@@ -152,7 +152,7 @@ export function Withdraw() {
 | sBTC Testnet  |             | ✅ Supported |
 | sBTC Mainnet  |             | 🟡 Pending   |
 | Deposit sBTC  | `OP_RETURN` | ✅ Supported |
-| Withdraw sBTC | `OP_RETURN` | ✅ Pending   |
+| Withdraw sBTC | `OP_RETURN` | ✅ Supported |
 | Deposit sBTC  | `OP_DROP`   | 🟡 Pending   |
 | Withdraw sBTC | `OP_DROP`   | 🟡 Pending   |
 
