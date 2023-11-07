@@ -4,6 +4,14 @@
   <b>Integrate sBTC deposits and withdrawals in React apps with minimal configuration and an intuitive API.</b>
 </p>
 
+<p align="center">
+  <a href="https://badge.fury.io/js/@double-spent%2Fsbtc-react">
+    <img src="https://badge.fury.io/js/@double-spent%2Fsbtc-react.svg" alt="package npm version" height="18" />
+  </a>
+  <img src="https://img.shields.io/npm/l/%40double-spent%2Fsbtc-react" alt="package license" height="18">
+  <img src="https://img.shields.io/npm/dw/%40double-spent%2Fsbtc-react" alt="package weekly downloads" height="18" />
+</p>
+
 ## What's inside?
 
 This library provides React hooks and components to deposit and withdraw sBTC using deployed mainnet, testnet, and

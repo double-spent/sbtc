@@ -4,6 +4,14 @@
   <b>Deposit and withdraw sBTC with minimal configuration and an intuitive API.</b>
 </p>
 
+<p align="center">
+  <a href="https://badge.fury.io/js/@double-spent%2Fsbtc-core">
+    <img src="https://badge.fury.io/js/@double-spent%2Fsbtc-core.svg" alt="package npm version" height="18" />
+  </a>
+  <img src="https://img.shields.io/npm/l/%40double-spent%2Fsbtc-core" alt="package license" height="18">
+  <img src="https://img.shields.io/npm/dw/%40double-spent%2Fsbtc-core" alt="package weekly downloads" height="18" />
+</p>
+
 ## What's inside?
 
 This library provides functions and utilities to deposit and withdraw sBTC using deployed mainnet, testnet, and devnet

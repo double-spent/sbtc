@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "eslint-config-next": "^13.4.1",

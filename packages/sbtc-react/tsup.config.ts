@@ -9,6 +9,5 @@ export default defineConfig({
   },
   format: ['cjs', 'esm'],
   external: ['react'],
-  sourcemap: true,
   dts: true,
 });
