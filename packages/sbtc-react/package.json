@@ -1,6 +1,6 @@
 {
   "name": "@double-spent/sbtc-react",
-  "version": "0.0.0",
+  "version": "0.1.0-pre.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@double-spent/sbtc-core": "*"
+    "@double-spent/sbtc-core": "0.1.0-pre.0"
   },
   "devDependencies": {
     "@double-spent/sbtc-jest": "*",

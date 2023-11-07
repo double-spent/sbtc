@@ -1,0 +1,15 @@
+{
+  "mode": "pre",
+  "tag": "pre",
+  "initialVersions": {
+    "@double-spent/sbtc-demo": "0.0.0",
+    "eslint-config-sbtc": "0.0.0",
+    "@double-spent/sbtc-core": "0.0.0",
+    "@double-spent/sbtc-jest": "0.0.0",
+    "@double-spent/sbtc-react": "0.0.0",
+    "@double-spent/sbtc-tsconfig": "0.0.0"
+  },
+  "changesets": [
+    "tough-owls-develop"
+  ]
+}
