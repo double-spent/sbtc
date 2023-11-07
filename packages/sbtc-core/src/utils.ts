@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js';
 
 /**
- * Converts an amount in BTC to SATS.
+ * Converts an amount from BTC to SATS.
  *
- * @param btcAmount The amount to convert.
+ * @param btcAmount The BTC amount to convert.
+ *
  * @returns The converted amount.
  */
 export function convertBtcToSats(btcAmount: number) {

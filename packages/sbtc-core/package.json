@@ -2,10 +2,15 @@
   "name": "@double-spent/sbtc-core",
   "version": "0.1.0-pre.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/double-spent/sbtc.git",
+    "directory": "packages/sbtc-core"
+  },
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
   "files": [
     "dist/**"
   ],
@@ -16,6 +21,13 @@
     "lint:fix": "eslint \"src/**/*.ts*\" --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "jest"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.3.2",
+    "@scure/btc-signer": "^1.1.0",
+    "bignumber.js": "9.1.1",
+    "bitcoinjs-lib": "^6.1.5",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@double-spent/sbtc-jest": "*",
@@ -37,12 +49,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@noble/hashes": "^1.3.2",
-    "@scure/btc-signer": "^1.1.0",
-    "bignumber.js": "9.1.1",
-    "bitcoinjs-lib": "^6.1.5",
-    "zod": "^3.22.4"
   }
 }

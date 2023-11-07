@@ -10,7 +10,7 @@ import type { SbtcNetwork } from './network';
 import { getBtcNetwork, getSbtcApi } from './network';
 
 /**
- * Arguments for an sBTC deposit.
+ * Arguments for submitting an sBTC deposit.
  */
 export type SubmitSbtcDepositArgs = {
   satsAmount: number;
@@ -18,19 +18,19 @@ export type SubmitSbtcDepositArgs = {
   stacksAddress: string;
   bitcoinAddress: string;
   bitcoinPublicKey: string;
-  feeRate?: SbtcDepositFeeRate;
+  feeRateTarget?: SbtcDepositFeeRate;
   signPsbt: SbtcSignPsbtCallback;
 };
 
 /**
- * The result of an sBTC deposit.
+ * Result from submitting an sBTC deposit.
  */
 export type SubmitSbtcDepositResult = {
   btcTransactionHash: string;
 };
 
 /**
- * Initiates and broadcasts an sBTC deposit to the network.
+ * Submits an sBTC deposit.
  *
  * @param args.satsAmount       The amount in satoshis to deposit.
  * @param args.stacksAddress    The sender's Stacks address where the sBTC will be sent.
@@ -38,8 +38,7 @@ export type SubmitSbtcDepositResult = {
  * @param args.bitcoinPublicKey The sender's Bitcoin public key used to sign the deposit PSBT.
  * @param args.signPsbt         The callback used to sign PSBTs before broadcasting the deposit.
  * @param args.network          The network to use.
- *
- * @returns The Bitcoin transaction hash.
+ * @param args.feeRateTarget    The target fee rate to use (low, medium, high).
  *
  * @throws {SbtcApiError} Failed to fetch from the sBTC API.
  */
@@ -49,7 +48,7 @@ export async function submitSbtcDeposit({
   stacksAddress,
   bitcoinAddress,
   bitcoinPublicKey,
-  feeRate: feeRateTarget = 'low',
+  feeRateTarget = 'low',
   signPsbt,
 }: SubmitSbtcDepositArgs): Promise<SubmitSbtcDepositResult> {
   const api = getSbtcApi({ network });

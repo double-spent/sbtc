@@ -15,10 +15,13 @@ export type SignSbtcWithdrawalArgs = {
 };
 
 /**
- * The result of signing an sBTC withdrawal.
+ * Result from signing an sBTC withdrawal.
  */
 export type SignSbtcWithdrawalResult = {
-  signedMessage: string;
+  /**
+   * The withdrawal signature.
+   */
+  signature: string;
 };
 
 /**
@@ -28,8 +31,6 @@ export type SignSbtcWithdrawalResult = {
  * @param args.bitcoinAddress   The sender's Bitcoin address to send the withdrawn BTC.
  * @param args.signMessage      The callback used to sign the message.
  * @param args.network          The network to use.
- *
- * @returns The signature.
  */
 export async function signSbtcWithdrawal({ satsAmount, bitcoinAddress, network, signMessage }: SignSbtcWithdrawalArgs) {
   const stacksNetwork = getStacksNetwork(network);

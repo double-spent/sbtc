@@ -9,7 +9,7 @@ import type { SbtcDepositFeeRate, SbtcSignPsbtCallback } from './interfaces';
 import { getBtcNetwork, getSbtcApi, type SbtcNetwork } from './network';
 
 /**
- * Arguments for an sBTC withdrawal.
+ * Arguments for submitting an sBTC withdrawal.
  */
 export type SubmitSbtcWithdrawalArgs = {
   signature: string;
@@ -17,20 +17,24 @@ export type SubmitSbtcWithdrawalArgs = {
   network: SbtcNetwork;
   bitcoinAddress: string;
   bitcoinPublicKey: string;
-  feeRate?: SbtcDepositFeeRate;
+  feeRateTarget?: SbtcDepositFeeRate;
   signPsbt: SbtcSignPsbtCallback;
 };
 
 /**
- * The result of an sBTC withdrawal.
+ * Result from submitting an sBTC withdrawal.
  */
 export type SubmitSbtcWithdrawalResult = {
+  /**
+   * The hash of the Bitcoin transaction.
+   */
   btcTransactionHash: string;
 };
 
 /**
- * Initiates and broadcasts an sBTC withdrawal to the network. To submit a withdrawal, it has to
- * be authorized by signing a message. Use `signSbtcWithdrawal` to create the signature.
+ * Submits an sBTC withdrawal. To submit a withdrawal, it has to be authorized
+ * by signing a message first. Use `signSbtcWithdrawal` to create the signature and
+ * pass it in the arguments.
  *
  * @param args.signature        The signature authorizing the withdrawal.
  * @param args.satsAmount       The amount in satoshis to withdraw.
@@ -38,8 +42,7 @@ export type SubmitSbtcWithdrawalResult = {
  * @param args.bitcoinPublicKey The sender's Bitcoin public key used to sign the withdraw PSBT.
  * @param args.signPsbt         The callback used to sign PSBTs before broadcasting the withdrawal.
  * @param args.network          The network to use.
- *
- * @returns The Bitcoin transaction hash.
+ * @param args.feeRateTarget    The target fee rate to use (low, medium, high).
  *
  * @throws {SbtcApiError} Failed to fetch from the sBTC API.
  */
@@ -49,7 +52,7 @@ export async function submitSbtcWithdrawal({
   satsAmount,
   bitcoinAddress,
   bitcoinPublicKey,
-  feeRate: feeRateTarget = 'low',
+  feeRateTarget = 'low',
   signPsbt,
 }: SubmitSbtcWithdrawalArgs): Promise<SubmitSbtcWithdrawalResult> {
   const api = getSbtcApi({ network });

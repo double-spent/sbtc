@@ -4,13 +4,16 @@ import { StacksDevnet, StacksTestnet } from '@stacks/network';
 
 import { SbtcUnsupportedNetworkError } from './errors';
 
+/**
+ * Networks specific to the sBTC protocol.
+ */
 export enum SbtcNetwork {
   DEVNET,
   TESTNET,
   MAINNET,
 }
 
-type GetSbtcApiArgs =
+export type GetSbtcApiArgs =
   | {
       network: SbtcNetwork.DEVNET;
       config?: ConstructorParameters<typeof DevEnvHelper>[0];
@@ -24,11 +27,11 @@ type GetSbtcApiArgs =
     };
 
 /**
- * Gets the sBTC remote API for the specified network.
+ * Gets the sBTC API instance.
  *
- * @param network The network to use.
+ * @param network The sBTC network.
  *
- * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ * @throws {SbtcUnsupportedNetworkError} The specified network is not supported.
  */
 export function getSbtcApi(args: GetSbtcApiArgs) {
   switch (args.network) {
@@ -44,11 +47,11 @@ export function getSbtcApi(args: GetSbtcApiArgs) {
 }
 
 /**
- * Gets the BTC network for the specified sBTC network.
+ * Gets the BTC network for an sBTC network.
  *
- * @param network The network to use.
+ * @param network The sBTC network.
  *
- * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ * @throws {SbtcUnsupportedNetworkError} The specified network is not supported.
  */
 export function getBtcNetwork(network: SbtcNetwork) {
   switch (network) {
@@ -64,11 +67,11 @@ export function getBtcNetwork(network: SbtcNetwork) {
 }
 
 /**
- * Gets the Stacks network for the specified sBTC network.
+ * Gets the Stacks network for an sBTC network.
  *
- * @param network The network to use.
+ * @param network The sBTC network.
  *
- * @throws {SbtcUnsupportedNetworkError} An unsupported network was specified.
+ * @throws {SbtcUnsupportedNetworkError} The specified network is not supported.
  */
 export function getStacksNetwork(network: SbtcNetwork) {
   switch (network) {
