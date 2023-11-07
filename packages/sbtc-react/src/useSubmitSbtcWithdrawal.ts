@@ -6,6 +6,11 @@ import { useSbtc } from './context';
 import { SbtcUserNotFoundError } from './errors';
 import { getSbtcUserDataNetwork } from './network';
 
+/**
+ * Submits an sBTC withdrawal.
+ *
+ * @throws {SbtcUserNotFoundError} No user context was provided (no Stacks wallet is connected.)
+ */
 export function useSubmitSbtcWithdrawal() {
   const { network, user, signPsbt } = useSbtc();
 

@@ -6,6 +6,11 @@ import { useSbtc } from './context';
 import { SbtcUserNotFoundError } from './errors';
 import { getSbtcUserDataNetwork } from './network';
 
+/**
+ * Submits an sBTC deposit.
+ *
+ * @throws {SbtcUserNotFoundError} No user context was provided (no Stacks wallet is connected.)
+ */
 export function useSubmitSbtcDeposit() {
   const { network, user, signPsbt } = useSbtc();
 
