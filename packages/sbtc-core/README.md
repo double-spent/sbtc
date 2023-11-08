@@ -24,7 +24,7 @@ npm i @double-spent/sbtc-core
 
 ## Usage
 
-### Deposit sBTC
+### Deposit BTC for sBTC
 
 Depositing sBTC involves sending BTC over the Bitcoin network to the sBTC bridge and receive sBTC on the Stacks network.
 This can be achieved with the `submitSbtcDeposit` function, which creates a Bitcoin
@@ -210,5 +210,6 @@ The `signSbtcWithdrawal` function takes the following arguments:
 
 ## References
 
-- [sBTC official documentation](https://stacks-network.github.io/sbtc-docs/) by Stacks
-- [sbtc NPM package](https://www.npmjs.com/package/sbtc) by Stacks
+- [sBTC Bridge](https://bridge.sbtc.tech/)
+- [sBTC Official Documentation](https://stacks-network.github.io/sbtc-docs/)
+- [`sbtc` NPM Package](https://www.npmjs.com/package/sbtc)

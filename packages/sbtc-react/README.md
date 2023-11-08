@@ -14,28 +14,43 @@
 
 ## What's inside?
 
-This library provides React hooks and components to deposit and withdraw sBTC using deployed mainnet, testnet, and
-devnet contracts.
+This package allows to easily implement sBTC deposits and withdrawals into React apps. The provided functions and
+helpers provide an interface to the on-chain contracts deployed on mainnet, testnet, and devnet.
 
 ## Usage
 
-### Set-up provider
+## Installation
 
-Add an instance of `SbtcProvider` at the top of the component tree.
+```bin
+npm i @double-spent/sbtc-react
+```
+
+### Set up providers
+
+The [`SbtcProvider`](./src/context.tsx) component provides context to the hooks included in this package. Add an
+instance of `SbtcProvider` at the top of the component tree — this would be `App.tsx` in `create-react-app` or the
+[Root Layout](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required) in
+Next.js.
+
+> This package is not tied to a particular wallet, so the `SbtcProvider` requires the callbacks used to sign messages
+> and PSBTs to be passed as props. The example below uses the [Leather Wallet.](https://leather.io/)
 
 ```ts
 // App.tsx
 
 export default function App() {
   // Load user data from a connected wallet
+
   const user = userSession.loadUserData();
 
-  // Define the callback used to sign PSBTs
+  // Define a callback used to sign PSBTs with Leather
+
   const signPsbt = async (request) => {
     return await (window as any).btc.request('signPsbt', request).result.hex;
   };
 
-  // Define the callback used to sign messages
+  // Define a callback used to sign messages with Leather
+
   const signMessage = async ({ message, stacksNetwork }) => {
     return await new Promise((resolve) => {
       openSignatureRequestPopup({
@@ -52,36 +67,38 @@ export default function App() {
   return (
     <>
       <SbtcProvider user={user} network={SbtcNetwork.TESTNET} signMessage={signMessage} signPsbt={signPsbt}>
-        <div>
-          <p>App goes here...</p>
-        </div>
+        {/* rest of app goes here .. */}
       </SbtcProvider>
     </>
   );
 }
 ```
 
-`SbtcProvider` takes the following props:
+The `SbtcProvider` component takes the following props:
 
-| Prop          | Type                      | Description                          |
-| ------------- | ------------------------- | ------------------------------------ |
-| `user`        | `UserData?`               | The connected wallet's user, if any. |
-| `network`     | `SbtcNetwork`             | The network to use.                  |
-| `signPsbt`    | `SbtcSignPsbtCallback`    | The callback used to sign PSBTs.     |
-| `signMessage` | `SbtcSignMessageCallback` | The callback used to sign messages.  |
+| Prop          | Type                                                        | Description                          |
+| ------------- | ----------------------------------------------------------- | ------------------------------------ |
+| `user`        | `UserData?`                                                 | The connected wallet's user, if any. |
+| `network`     | [`SbtcNetwork`](../sbtc-core/src/network.ts)                | The network to use.                  |
+| `signPsbt`    | [`SbtcSignPsbtCallback`](../sbtc-core/src/interfaces.ts)    | The callback used to sign PSBTs.     |
+| `signMessage` | [`SbtcSignMessageCallback`](../sbtc-core/src/interfaces.ts) | The callback used to sign messages.  |
 
 ### Submit an sBTC deposit
 
-To submit an sBTC deposit, use the `useSubmitSbtcDeposit` hook. The callback returned is intended to be used in event
-handlers or other async functions. When calling `submitSbtcDeposit` with the amount to deposit, a request will be
-triggered to sign a PSBT used to send the BTC and receive sBTC on the associated Stacks wallet address.
+The `useSubmitSbtcDeposit` hook returns a callback used to submit sBTC deposits. It requires an instance of
+`SbtcProvider` present in the component tree to retrieve common configuration, like the connected Stacks user session.
+As the example above, triggering a deposit will open Leather to request signing the
+[PSBT (partially-signed Bitcoin transaction)](https://river.com/learn/what-are-partially-signed-bitcoin-transactions-psbts/)
+to send the BTC to the bridge and receive sBTC.
+
+> See the [`@double-spent/sbtc-core`](../sbtc-core/README.md#deposit-btc-for-sbtc) for more details.
 
 ```ts
 // Deposit.tsx
 
 export function Deposit() {
   const [satsAmount, setSatsAmount] = useState(0);
-  const [transactionHash, setTransactoinHash] = useState<string | undefined>();
+  const [transactionHash, setTransactionHash] = useState<string | undefined>();
   const { submitSbtcDeposit } = useSubmitSbtcDeposit();
 
   const handleChange = (event) => {
@@ -89,19 +106,27 @@ export function Deposit() {
   };
 
   const handleSubmit = async () => {
-    const submitSbtcDeposit(satsAmount);
+    const { btcTransactionHash } = await submitSbtcDeposit(satsAmount);
+    setTransactionHash(btcTransactionHash);
   };
 
-  if (transactinHash) {
+  if (transactionHash) {
     return (
       <div>
-        <p>Submitted deposit: {transactionHash}</p>
+        <h4>Deposit submitted!</h4>
+        <p>
+          Transaction hash:
+          <a href={`https://blockstream.info/testnet/tx/${transactionHash}`} target="_blank">
+            {transactionHash}
+          </a>
+        </p>
       </div>
     );
   }
 
   return (
     <div>
+      <h4>Deposit sBTC</h4>
       <input name="amount" onChange={handleChange} />
       <button onClick={handleSubmit}>Deposit</button>
     </div>
@@ -111,8 +136,14 @@ export function Deposit() {
 
 ### Sign and submit an sBTC withdrawal
 
-To sign and submit an sBTC withdrawal, use the `useSignSbtcWithdrawal` and `useSubmitSbtcWithdrawal` hooks. A withdrawal
-requires to first sign the transaction and then submit it with the signature.
+The `useSignSbtcWithdrawal` and `useSubmitSbtcWithdrawal` hooks return callbacks to sign and submit sBTC withdrawals
+respectively. They require an instance of `SbtcProvider` present in the component tree to retrieve common configuration,
+like the connected Stacks user session. As the example above, calling either hook will open Leather to request signing
+the withdrawal and the
+[PSBT (partially-signed Bitcoin transaction)](https://river.com/learn/what-are-partially-signed-bitcoin-transactions-psbts/)
+to send the sBTC to the bridge and receive BTC.
+
+> See the [`@double-spent/sbtc-core`](../sbtc-core/README.md#withdraw-sbtc-for-btc) for more details.
 
 ```ts
 // Withdraw.tsx
@@ -138,13 +169,20 @@ export function Withdraw() {
   if (transactinHash) {
     return (
       <div>
-        <p>Submitted withdrawal: {transactionHash}</p>
+        <h4>Withdrawal submitted!</h4>
+        <p>
+          Transaction hash:
+          <a href={`https://blockstream.info/testnet/tx/${transactionHash}`} target="_blank">
+            {transactionHash}
+          </a>
+        </p>
       </div>
     );
   }
 
   return (
     <div>
+      <h4>Withdraw sBTC</h4>
       <input name="amount" onChange={handleChange} />
       <button onClick={handleSubmit}>Deposit</button>
     </div>
@@ -166,5 +204,6 @@ export function Withdraw() {
 
 ## References
 
-- [sBTC official documentation](https://stacks-network.github.io/sbtc-docs/) by Stacks
-- [sbtc NPM package](https://www.npmjs.com/package/sbtc) by Stacks
+- [sBTC Bridge](https://bridge.sbtc.tech/)
+- [sBTC Official Documentation](https://stacks-network.github.io/sbtc-docs/)
+- [`sbtc` NPM Package](https://www.npmjs.com/package/sbtc)
