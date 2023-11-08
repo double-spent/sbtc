@@ -10,6 +10,7 @@
     "@double-spent/sbtc-tsconfig": "0.0.0"
   },
   "changesets": [
-    "tough-owls-develop"
+    "tough-owls-develop",
+    "violet-pigs-raise"
   ]
 }

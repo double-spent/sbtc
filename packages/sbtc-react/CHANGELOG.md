@@ -1,5 +1,13 @@
 # @double-spent/sbtc-react
 
+## 0.1.0-pre.1
+
+### Patch Changes
+
+- Improved docs
+- Updated dependencies
+  - @double-spent/sbtc-core@0.1.0-pre.1
+
 ## 0.1.0-pre.0
 
 ### Minor Changes
