@@ -142,7 +142,9 @@ The `signSbtcWithdrawal` function takes the following arguments:
 | ---------------- | --------------------------------------------------- | ------------------------------------------------------------- |
 | `satsAmount`     | `number`                                            | The amount in satoshis to withdraw.                           |
 | `bitcoinAddress` | `string`                                            | The sender's Bitcoin address where the BTC will be withdrawn. |
+| `signature`      | `string`                                            | The signature authorizing the withdrawal.                     |
 | `network`        | [`SbtcNetwork`](./src/network.ts)                   | The network to use.                                           |
+| `feeRateTarget`  | [`SbtcDepositFeeRate`](./src/interfaces.ts)         | The target fee rate to use (low, medium, high).               |
 | `signMessage`    | [`SbtcSignMessageCallback`](./src/interfaces.ts#L6) | The callback used to sign the message.                        |
 
 #### Submit the withdrawal
@@ -186,7 +188,7 @@ const btcTransactionHash = await submitSbtcWithdrawal({
 console.log({ btcTransactionHash });
 ```
 
-The `signSbtcWithdrawal` function takes the following arguments:
+The `submitSbtcWithdrawal` function takes the following arguments:
 
 | Argument           | Type                                          | Description                                                         |
 | ------------------ | --------------------------------------------- | ------------------------------------------------------------------- |
