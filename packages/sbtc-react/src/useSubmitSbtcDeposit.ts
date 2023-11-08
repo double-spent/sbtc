@@ -4,7 +4,7 @@ import type { SbtcNetwork, SubmitSbtcDepositResult } from '@double-spent/sbtc-co
 import { submitSbtcDeposit as coreSubmitSbtcDeposit } from '@double-spent/sbtc-core';
 
 import { useSbtc } from './context';
-import { SbtcUserNotFoundError } from './errors';
+import { SbtcSubmitDepositError, SbtcUserNotFoundError } from './errors';
 import { getSbtcUserDataNetwork } from './network';
 
 export type UseSubmitSbtcDepositResult = {
@@ -19,6 +19,8 @@ export type UseSubmitSbtcDepositResult = {
    * @param satsAmount The amount in sats.
    *
    * @returns The result of submitting the deposit.
+   *
+   * @throws {SbtcSignDepositError} Failed to submit the deposit.
    */
   submitSbtcDeposit: (satsAmount: number) => Promise<SubmitSbtcDepositResult>;
 };
@@ -43,14 +45,18 @@ export function useSubmitSbtcDeposit(): UseSubmitSbtcDepositResult {
       const bitcoinAddress = user.profile.btcAddress.p2wpkh[userDataNetwork];
       const bitcoinPublicKey = user.profile.btcPublicKey.p2wpkh;
 
-      return coreSubmitSbtcDeposit({
-        network,
-        stacksAddress,
-        bitcoinAddress,
-        bitcoinPublicKey,
-        satsAmount,
-        signPsbt,
-      });
+      try {
+        return coreSubmitSbtcDeposit({
+          network,
+          stacksAddress,
+          bitcoinAddress,
+          bitcoinPublicKey,
+          satsAmount,
+          signPsbt,
+        });
+      } catch (error) {
+        throw new SbtcSubmitDepositError(error as Error);
+      }
     },
     [network, signPsbt, user],
   );

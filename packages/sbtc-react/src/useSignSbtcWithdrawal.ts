@@ -4,7 +4,7 @@ import type { SbtcNetwork, SignSbtcWithdrawalResult } from '@double-spent/sbtc-c
 import { signSbtcWithdrawal as coreSignSbtcWithdrawal } from '@double-spent/sbtc-core';
 
 import { useSbtc } from './context';
-import { SbtcUserNotFoundError } from './errors';
+import { SbtcSignWithdrawalError, SbtcUserNotFoundError } from './errors';
 import { getSbtcUserDataNetwork } from './network';
 
 export type UseSignSbtcWithdrawalResult = {
@@ -19,6 +19,8 @@ export type UseSignSbtcWithdrawalResult = {
    * @param satsAmount The amount in sats.
    *
    * @returns The result of signing the sBTC withdrawal.
+   *
+   * @throws {SbtcSignWithdrawalError} Failed to sign the withdrawal.
    */
   signSbtcWithdrawal: (satsAmount: number) => Promise<SignSbtcWithdrawalResult>;
 };
@@ -40,12 +42,16 @@ export function useSignSbtcWithdrawal(): UseSignSbtcWithdrawalResult {
       const userDataNetwork = getSbtcUserDataNetwork(network);
       const bitcoinAddress = user.profile.btcAddress.p2wpkh[userDataNetwork];
 
-      return coreSignSbtcWithdrawal({
-        network,
-        bitcoinAddress,
-        satsAmount,
-        signMessage,
-      });
+      try {
+        return coreSignSbtcWithdrawal({
+          network,
+          bitcoinAddress,
+          satsAmount,
+          signMessage,
+        });
+      } catch (error) {
+        throw new SbtcSignWithdrawalError(error as Error);
+      }
     },
     [network, signMessage, user],
   );
