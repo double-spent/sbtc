@@ -1,5 +1,16 @@
 # @double-spent/sbtc-react
 
+## 0.1.0-pre.3
+
+### Minor Changes
+
+- Update sBTC testnet contract address
+
+### Patch Changes
+
+- Updated dependencies
+  - @double-spent/sbtc-core@0.1.0-pre.3
+
 ## 0.1.0-pre.2
 
 ### Patch Changes

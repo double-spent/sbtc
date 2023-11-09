@@ -1,7 +1,7 @@
 {
   "name": "@double-spent/sbtc-react",
   "description": "Integrate sBTC deposits and withdrawals in React apps with minimal configuration and an intuitive API.",
-  "version": "0.1.0-pre.2",
+  "version": "0.1.0-pre.3",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@double-spent/sbtc-core": "0.1.0-pre.2"
+    "@double-spent/sbtc-core": "0.1.0-pre.3"
   },
   "devDependencies": {
     "@double-spent/sbtc-jest": "*",
