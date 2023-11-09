@@ -1,5 +1,6 @@
 {
   "name": "@double-spent/sbtc-react",
+  "description": "Integrate sBTC deposits and withdrawals in React apps with minimal configuration and an intuitive API.",
   "version": "0.1.0-pre.2",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

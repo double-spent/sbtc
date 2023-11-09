@@ -1,7 +1,8 @@
-import { DevEnvHelper, REGTEST, TESTNET, TestnetHelper } from 'sbtc';
+import { DevEnvHelper, REGTEST, SBTC_FT_ADDRESS_DEVENV, TESTNET, TestnetHelper } from 'sbtc';
 
 import { StacksDevnet, StacksTestnet } from '@stacks/network';
 
+import { TESTNET_SBTC_CONTRACT_ADDRESS } from './constants';
 import { SbtcUnsupportedNetworkError } from './errors';
 
 /**
@@ -43,6 +44,26 @@ export function getSbtcApi(args: GetSbtcApiArgs) {
 
     default:
       throw new SbtcUnsupportedNetworkError(args.network);
+  }
+}
+
+/**
+ * Gets the sBTC contract address.
+ *
+ * @param network The sBTC network.
+ *
+ * @throws {SbtcUnsupportedNetworkError} The specified network is not supported.
+ */
+export function getSbtcContractAddress(network: SbtcNetwork) {
+  switch (network) {
+    case SbtcNetwork.TESTNET:
+      return TESTNET_SBTC_CONTRACT_ADDRESS;
+
+    case SbtcNetwork.DEVNET:
+      return SBTC_FT_ADDRESS_DEVENV;
+
+    default:
+      throw new SbtcUnsupportedNetworkError(network);
   }
 }
 

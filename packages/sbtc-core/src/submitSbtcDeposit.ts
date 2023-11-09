@@ -7,7 +7,7 @@ import { bytesToHex, hexToBytes } from '@stacks/common';
 import { SbtcApiError } from './errors';
 import type { SbtcDepositFeeRate, SbtcSignPsbtCallback } from './interfaces';
 import type { SbtcNetwork } from './network';
-import { getBtcNetwork, getSbtcApi } from './network';
+import { getBtcNetwork, getSbtcApi, getSbtcContractAddress } from './network';
 
 /**
  * Arguments for submitting an sBTC deposit.
@@ -52,6 +52,7 @@ export async function submitSbtcDeposit({
   signPsbt,
 }: SubmitSbtcDepositArgs): Promise<SubmitSbtcDepositResult> {
   const api = getSbtcApi({ network });
+  const contractAddress = getSbtcContractAddress(network);
 
   let utxos: UtxoWithTx[];
   let pegAddress: string;
@@ -60,7 +61,7 @@ export async function submitSbtcDeposit({
   try {
     [utxos, pegAddress, feeRate] = await Promise.all([
       api.fetchUtxos(bitcoinAddress),
-      api.getSbtcPegAddress(),
+      api.getSbtcPegAddress(contractAddress),
       api.estimateFeeRate(feeRateTarget),
     ]);
   } catch (error) {

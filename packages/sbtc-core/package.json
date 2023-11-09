@@ -1,5 +1,6 @@
 {
   "name": "@double-spent/sbtc-core",
+  "description": "Integrate sBTC deposits and withdrawals with minimal configuration and an intuitive API.",
   "version": "0.1.0-pre.2",
   "license": "MIT",
   "repository": {
