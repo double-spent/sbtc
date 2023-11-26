@@ -1,7 +1,7 @@
 import type { UtxoWithTx } from 'sbtc';
 import { sbtcDepositHelper } from 'sbtc';
 
-import * as btc from '@scure/btc-signer';
+import { Transaction as BtcTransaction } from '@scure/btc-signer';
 import { bytesToHex, hexToBytes } from '@stacks/common';
 
 import { SbtcApiError } from './errors';
@@ -85,7 +85,7 @@ export async function submitSbtcDeposit({
     hex: bytesToHex(psbt),
   });
 
-  const formattedTransaction = btc.Transaction.fromPSBT(hexToBytes(signedPsbt));
+  const formattedTransaction = BtcTransaction.fromPSBT(hexToBytes(signedPsbt));
 
   formattedTransaction.finalize();
 

@@ -8,8 +8,6 @@
   "files.trimTrailingWhitespace": true,
   "javascript.preferences.quoteStyle": "single",
   "javascript.suggestionActions.enabled": false,
-  "jest.debugCodeLens.showWhenTestStateIn": ["fail", "unknown", "pass", "skip"],
-  "jest.enableCodeLens": true,
   "jest.autoRun": {
     "watch": true,
     "onStartup": ["all-tests"]
